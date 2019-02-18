@@ -1,17 +1,18 @@
-import { createAction, NavigationActions, Storage } from '../utils'
+import { createAction, Storage } from '../utils'
 import * as authService from '../services/auth'
+import NavigationService from '../services/NavigationService'
 
 export default {
   namespace: 'app',
   state: {
     login: false,
     loading: true,
-    fetching: false,
+    fetching: false
   },
   reducers: {
     updateState(state, { payload }) {
       return { ...state, ...payload }
-    },
+    }
   },
   effects: {
     *loadStorage(action, { call, put }) {
@@ -22,7 +23,7 @@ export default {
       yield put(createAction('updateState')({ fetching: true }))
       const login = yield call(authService.login, payload)
       if (login) {
-        yield put(NavigationActions.back())
+        NavigationService.back()
       }
       yield put(createAction('updateState')({ login, fetching: false }))
       Storage.set('login', login)
@@ -30,11 +31,11 @@ export default {
     *logout(action, { call, put }) {
       yield call(Storage.set, 'login', false)
       yield put(createAction('updateState')({ login: false }))
-    },
+    }
   },
   subscriptions: {
     setup({ dispatch }) {
       dispatch({ type: 'loadStorage' })
-    },
-  },
+    }
+  }
 }

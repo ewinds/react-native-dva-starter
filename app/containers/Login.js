@@ -2,14 +2,16 @@ import React, { Component } from 'react'
 import { StyleSheet, View, Image, ActivityIndicator } from 'react-native'
 import { connect } from 'react-redux'
 
-import { Button, Touchable } from '../components'
+import { Button } from '@ant-design/react-native'
+import { Touchable } from '../components'
 
-import { createAction, NavigationActions } from '../utils'
+import { createAction } from '../utils'
+import NavigationService from '../services/NavigationService'
 
 @connect(({ app }) => ({ ...app }))
 class Login extends Component {
   static navigationOptions = {
-    title: 'Login',
+    title: 'Login'
   }
 
   onLogin = () => {
@@ -17,7 +19,7 @@ class Login extends Component {
   }
 
   onClose = () => {
-    this.props.dispatch(NavigationActions.back())
+    NavigationService.back()
   }
 
   render() {
@@ -27,7 +29,9 @@ class Login extends Component {
         {fetching ? (
           <ActivityIndicator />
         ) : (
-          <Button text="Login" onPress={this.onLogin} />
+          <Button type="ghost" onPress={this.onLogin}>
+            Login
+          </Button>
         )}
         {!fetching && (
           <Touchable style={styles.close} onPress={this.onClose}>
@@ -46,18 +50,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   close: {
     position: 'absolute',
     right: 10,
-    top: 30,
+    top: 30
   },
   icon: {
     width: 24,
     height: 24,
-    tintColor: 'gray',
-  },
+    tintColor: 'gray'
+  }
 })
 
 export default Login

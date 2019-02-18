@@ -1,25 +1,23 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Image } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { connect } from 'react-redux'
 
-import { Button } from '../components'
+import { Button, Icon } from '@ant-design/react-native'
 
-import { createAction, NavigationActions } from '../utils'
+import NavigationService from '../services/NavigationService'
+import { createAction } from '../utils'
 
 @connect(({ app }) => ({ ...app }))
 class Account extends Component {
   static navigationOptions = {
     tabBarLabel: 'Account',
     tabBarIcon: ({ focused, tintColor }) => (
-      <Image
-        style={[styles.icon, { tintColor: focused ? tintColor : 'gray' }]}
-        source={require('../images/person.png')}
-      />
-    ),
+      <Icon name="user" size="md" color={focused ? tintColor : 'gray'} />
+    )
   }
 
   gotoLogin = () => {
-    this.props.dispatch(NavigationActions.navigate({ routeName: 'Login' }))
+    NavigationService.navigate('Login')
   }
 
   logout = () => {
@@ -31,9 +29,13 @@ class Account extends Component {
     return (
       <View style={styles.container}>
         {login ? (
-          <Button text="Logout" onPress={this.logout} />
+          <Button type="ghost" onPress={this.logout}>
+            Logout
+          </Button>
         ) : (
-          <Button text="Goto Login" onPress={this.gotoLogin} />
+          <Button type="ghost" onPress={this.gotoLogin}>
+            Goto Login
+          </Button>
         )}
       </View>
     )
@@ -44,12 +46,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
-  },
-  icon: {
-    width: 32,
-    height: 32,
-  },
+    justifyContent: 'center'
+  }
 })
 
 export default Account

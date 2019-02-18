@@ -1,31 +1,30 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Image } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { connect } from 'react-redux'
 
-import { Button } from '../components'
+import { Button, Icon } from '@ant-design/react-native'
 
-import { NavigationActions } from '../utils'
+import NavigationService from '../services/NavigationService'
 
 @connect()
 class Home extends Component {
   static navigationOptions = {
     tabBarLabel: 'Home',
     tabBarIcon: ({ focused, tintColor }) => (
-      <Image
-        style={[styles.icon, { tintColor: focused ? tintColor : 'gray' }]}
-        source={require('../images/house.png')}
-      />
-    ),
+      <Icon name="home" size="md" color={focused ? tintColor : 'gray'} />
+    )
   }
 
   gotoDetail = () => {
-    this.props.dispatch(NavigationActions.navigate({ routeName: 'Detail' }))
+    NavigationService.navigate('Detail')
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <Button text="Goto Detail" onPress={this.gotoDetail} />
+        <Button type="ghost" onPress={this.gotoDetail}>
+          Goto Detail
+        </Button>
       </View>
     )
   }
@@ -35,12 +34,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
-  },
-  icon: {
-    width: 32,
-    height: 32,
-  },
+    justifyContent: 'center'
+  }
 })
 
 export default Home
